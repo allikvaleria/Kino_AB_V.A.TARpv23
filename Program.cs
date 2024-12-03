@@ -16,7 +16,7 @@ namespace Kino_AB_V.A.TARpv23
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Kino());
+            Application.Run(new Kasutaja());
         }
     }
 }
