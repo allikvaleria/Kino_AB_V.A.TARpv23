@@ -1,6 +1,6 @@
 ﻿namespace Kino_AB_V.A.TARpv23
 {
-    partial class Kino
+    partial class Admin
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,13 @@
         {
             this.SuspendLayout();
             // 
-            // Kino
+            // Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "Kino";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Kino_Load);
+            this.Name = "Admin";
+            this.Text = "Admin";
             this.ResumeLayout(false);
 
         }
@@ -45,4 +44,3 @@
         #endregion
     }
 }
-

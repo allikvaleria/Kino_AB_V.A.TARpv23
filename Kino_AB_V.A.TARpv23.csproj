@@ -61,17 +61,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin.Designer.cs">
+      <DependentUpon>Admin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Kasutaja.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Kasutaja.Designer.cs">
       <DependentUpon>Kasutaja.cs</DependentUpon>
     </Compile>
-    <Compile Include="Kino.cs">
+    <Compile Include="Kinosaal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Kino.Designer.cs">
-      <DependentUpon>Kino.cs</DependentUpon>
+    <Compile Include="Kinosaal.Designer.cs">
+      <DependentUpon>Kinosaal.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,11 +87,14 @@
     <Compile Include="Roll.Designer.cs">
       <DependentUpon>Roll.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Admin.resx">
+      <DependentUpon>Admin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Kasutaja.resx">
       <DependentUpon>Kasutaja.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Kino.resx">
-      <DependentUpon>Kino.cs</DependentUpon>
+    <EmbeddedResource Include="Kinosaal.resx">
+      <DependentUpon>Kinosaal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -124,6 +133,7 @@
     <Content Include="film1.png" />
     <Content Include="film2.png" />
     <Content Include="film3.jpg" />
+    <Content Include="film4.jpg" />
     <Content Include="fon.jpg" />
     <Content Include="kino.jpg" />
   </ItemGroup>

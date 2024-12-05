@@ -12,6 +12,9 @@ namespace Kino_AB_V.A.TARpv23
 {
     public partial class Kasutaja : Form
     {
+        Label lbl_nimi, lbl_parool, lbl_email, lbl_tere;
+        TextBox txt_nimi, txt_parool, txt_email;
+        Button btn_login, btn_noLogin;
         public Kasutaja()
         {
             this.Height = 450;
@@ -44,17 +47,17 @@ namespace Kino_AB_V.A.TARpv23
             lbl_email.Size = new Size(107, 20);
             lbl_email.Text = "Sisesta email:";
 
-            // Taxt box - nimi
+            // Text box - nimi
             txt_nimi = new TextBox();
             txt_nimi.Location = new Point(218, 124);
             txt_nimi.Size = new Size(122, 20);
 
-            // Taxt box - parool
+            // Text box - parool
             txt_parool = new TextBox();
             txt_parool.Location = new Point(218, 274);
             txt_parool.Size = new Size(122, 20);
 
-            // Taxt box - email
+            // Text box - email
             txt_email = new TextBox();
             txt_email.Location = new Point(218, 199);
             txt_email.Size = new Size(122, 20);
@@ -81,6 +84,7 @@ namespace Kino_AB_V.A.TARpv23
             btn_noLogin.Location = new Point(519, 364);
             btn_noLogin.Size = new Size(192, 40);
             btn_noLogin.Text = "Jätka külalisega";
+            btn_noLogin.Click += Btn_noLogin_Click;
             
             // Add
             Controls.Add(btn_noLogin);
@@ -92,6 +96,12 @@ namespace Kino_AB_V.A.TARpv23
             Controls.Add(lbl_email);
             Controls.Add(lbl_parool);
             Controls.Add(lbl_nimi);
+        }
+
+        private void Btn_noLogin_Click(object sender, EventArgs e)
+        {
+            Roll roll = new Roll();
+            roll.Show();
         }
 
         private void Btn_login_Click(object sender, EventArgs e)

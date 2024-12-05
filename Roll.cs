@@ -13,6 +13,9 @@ namespace Kino_AB_V.A.TARpv23
     public partial class Roll : Form
     {
         private int imageIndex = 0;
+        Label lbl_vali;
+        Button btn_valiFilm, btn_ostaPilet;
+        PictureBox pictureBox;
         public Roll()
         {
             this.Height = 450;
@@ -68,9 +71,14 @@ namespace Kino_AB_V.A.TARpv23
                 pictureBox.Image = Image.FromFile(@"..\..\film2.png");
                 imageIndex = 2;
             }
-            else
+            else if (imageIndex == 2)
             {
                 pictureBox.Image = Image.FromFile(@"..\..\film3.jpg");
+                imageIndex = 3;
+            }
+            else
+            {
+                pictureBox.Image = Image.FromFile(@"..\..\film4.jpg");
                 imageIndex = 0;  
             }
         }

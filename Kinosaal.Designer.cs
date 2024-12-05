@@ -1,6 +1,6 @@
 ﻿namespace Kino_AB_V.A.TARpv23
 {
-    partial class Roll
+    partial class Kinosaal
     {
         /// <summary>
         /// Required designer variable.
@@ -30,13 +30,13 @@
         {
             this.SuspendLayout();
             // 
-            // Roll
+            // Kinosaal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "Roll";
-            this.Text = "Roll";
+            this.Name = "Kinosaal";
+            this.Text = "Kinosaal";
             this.ResumeLayout(false);
 
         }
