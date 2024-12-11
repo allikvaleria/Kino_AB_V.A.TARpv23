@@ -106,8 +106,24 @@ namespace Kino_AB_V.A.TARpv23
 
         private void Btn_login_Click(object sender, EventArgs e)
         {
-            Roll roll = new Roll();
-            roll.Show();
+            if (txt_nimi.Text == "" || txt_parool.Text == "" || txt_email.Text == "")
+            {
+                MessageBox.Show("Palun sisestage oma registreerimisandmed");
+            }
+            else
+            {
+                
+                if (txt_nimi.Text == "Admin" && txt_parool.Text == "Admin" && txt_email.Text == "Admin")
+                {
+                    Admin admin = new Admin();
+                    admin.Show();
+                }
+                else
+                {
+                    Roll roll = new Roll();
+                    roll.Show();
+                }
+            }
         }
     }
 }

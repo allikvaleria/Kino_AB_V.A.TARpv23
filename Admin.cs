@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,30 @@ namespace Kino_AB_V.A.TARpv23
         PictureBox pictureBox_admin;
         TextBox filmiNimi_txt, filmiImg_txt, filmiAasta_txt;
         Button kustuta_btn, lisa_btn, uuenda_btn;
+        SqlConnection conn = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\opilane\source\repos\ValeriaAllikTARpv23\Kino_AB_V.A.TARpv23\Database_RG.mdf;Integrated Security=True");
+        SqlCommand cmd;
+        SqlDataAdapter adapter;
+        OpenFileDialog open;
+        SaveFileDialog save;
+        string extension;
+
+        public void NaitaAndmed()
+        {
+            conn.Open();
+            DataTable dt = new DataTable();
+            cmd = new SqlCommand("SELECT * FROM Toode", conn);
+            adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(dt);
+            dataGridView1.DataSource = dt;
+            conn.Close();
+        }
+
+        private void Admin_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        
 
         public Admin()
         {
@@ -55,6 +80,7 @@ namespace Kino_AB_V.A.TARpv23
             kustuta_btn.Location = new Point(214, 33);
             kustuta_btn.Size = new Size(100, 20);
             kustuta_btn.Text = "Kustutamine";
+            kustuta_btn.Click += Kustuta_btn_Click;
             
             // lisa_btn
             lisa_btn = new Button();
@@ -62,6 +88,7 @@ namespace Kino_AB_V.A.TARpv23
             lisa_btn.Location = new Point(214, 126);
             lisa_btn.Size = new Size(100, 20);
             lisa_btn.Text = "Lisamine";
+            lisa_btn.Click += Lisa_btn_Click;
             
             // uuenda_btn
             uuenda_btn = new Button();
@@ -69,6 +96,7 @@ namespace Kino_AB_V.A.TARpv23
             uuenda_btn.Location = new Point(214, 78);
             uuenda_btn.Size = new Size(100, 20);
             uuenda_btn.Text = "Uuendamine";
+            uuenda_btn.Click += Uuenda_btn_Click;
             
             // Add
             Controls.Add(uuenda_btn);
@@ -79,6 +107,43 @@ namespace Kino_AB_V.A.TARpv23
             Controls.Add(filmiNimi_txt);
             Controls.Add(pictureBox_admin);
             Controls.Add(dataGridView1);
+        }
+
+        private void Uuenda_btn_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Lisa_btn_Click(object sender, EventArgs e)
+        {
+            if (filmiNimi_txt.Text.Trim() != string.Empty && filmiImg_txt.Text.Trim() != string.Empty && filmiAasta_txt.Text.Trim() != string.Empty)
+            {
+                try
+                {
+                    conn.Open();
+                    cmd = new SqlCommand("INSERT INTO Filmi (Filmi_nimetus, Aasta, Poster, Kinosaal_Id) VALUES (@filmiNimetus, @aasta, @poster, @kinosaalId)", conn);
+                    cmd.Parameters.AddWithValue("@filmiNimetus", filmiNimi_txt.Text);
+                    cmd.Parameters.AddWithValue("@aasta", filmiAasta_txt.Text);
+                    cmd.Parameters.AddWithValue("@poster", filmiNimi_txt.Text + extension);
+                    cmd.ExecuteNonQuery();
+
+                    conn.Close();
+                    NaitaAndmed();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Andmebaasiga viga");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Sisesta andmeid");
+            }
+        }
+
+        private void Kustuta_btn_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
