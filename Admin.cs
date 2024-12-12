@@ -198,6 +198,7 @@ namespace Kino_AB_V.A.TARpv23
                 {
                     MessageBox.Show("Error while adding data: " + ex.Message);
                 }
+
             }
             else
             {
