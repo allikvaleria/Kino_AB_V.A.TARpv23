@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,18 +26,9 @@ namespace Kino_AB_V.A.TARpv23
         OpenFileDialog open;
         SaveFileDialog save;
         string extension;
+        int ID = 0;
+        PictureBox pictureBox;
 
-
-        public void NaitaAndmed()
-        {
-            conn.Open();
-            DataTable dt = new DataTable();
-            cmd = new SqlCommand("SELECT * FROM Filmi", conn);
-            adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(dt);
-            dataGridView.DataSource = dt;
-            conn.Close();
-        }
 
         public Admin()
         {
@@ -74,6 +66,7 @@ namespace Kino_AB_V.A.TARpv23
             lisa_poster_btn.Location = new Point(485, 164);
             lisa_poster_btn.Size = new Size(135, 44);
             lisa_poster_btn.Text = "Lisa poster";
+            lisa_poster_btn.Click += Lisa_poster_btn_Click;
             
             // dataGridView
             dataGridView = new DataGridView();
@@ -115,9 +108,15 @@ namespace Kino_AB_V.A.TARpv23
             comboBox1.Location = new Point(164, 111);
             comboBox1.Size = new Size(152, 21);
 
+            //
+            pictureBox= new PictureBox();
+            pictureBox.Location = new Point(190, 10);
+            pictureBox.Size = new Size(327, 359);
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
             Kinosaalid();
             NaitaAndmed();
-            //
+            
             Controls.Add(comboBox1);
             Controls.Add(saal_lbl);
             Controls.Add(update_btn);
@@ -129,93 +128,191 @@ namespace Kino_AB_V.A.TARpv23
             Controls.Add(filimi_nimi_txt);
             Controls.Add(Filmi_aasta_lbl);
             Controls.Add(Filmi_pealkiri_lbl);
+            Controls.Add(pictureBox);
         }
 
-       
+        public void NaitaAndmed()
+        {
+            conn.Open();
+            DataTable dt = new DataTable();
+            cmd = new SqlCommand("SELECT * FROM Filmi", conn);
+            adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(dt);
+            dataGridView.DataSource = dt;
+            conn.Close();
+        }
 
+        private void DataGridView_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            ID = (int)dataGridView.Rows[e.RowIndex].Cells["Id"].Value;
+            filimi_nimi_txt.Text = dataGridView.Rows[e.RowIndex].Cells["Filmi_nimetus"].Value.ToString();
+            filmi_aasta_txt.Text = dataGridView.Rows[e.RowIndex].Cells["Filmi aasta"].Value.ToString();
+            try
+            {
+                pictureBox.Image = Image.FromFile(Path.Combine(Path.GetFullPath(@"..\..\Pildid"),
+                    dataGridView.Rows[e.RowIndex].Cells["Pildid"].Value.ToString()));
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+            catch (Exception)
+            {
+                pictureBox.Image = Image.FromFile(Path.Combine(Path.GetFullPath(@"..\..\Pildid"), "cross1.jpg"));
+            }
+        }
+
+        private void Lisa_poster_btn_Click(object sender, EventArgs e)
+        {
+            open = new OpenFileDialog();
+            open.InitialDirectory = @"C:\Users\opilane\Pictures\";
+            open.Multiselect = false;
+            open.Filter = "Images Files(*.jpeg;*.png;*.bmp;*.jpg)|*.jpeg;*.png;*.bmp;*.jpg";
+            FileInfo openfile = new FileInfo(@"C:\Users\opilane\Pictures\" + open.FileName);
+            if (open.ShowDialog() == DialogResult.OK && filimi_nimi_txt.Text != null)
+            {
+                save = new SaveFileDialog();
+                save.InitialDirectory = Path.GetFullPath(@"..\..\..\Pildid");
+                extension = Path.GetExtension(open.FileName);
+                save.FileName = "filimi_nimi_txt.Text" + extension;
+                save.Filter = "Images" + Path.GetExtension(open.FileName) + "|" + Path.GetExtension(open.FileName);
+                if (save.ShowDialog() == DialogResult.OK && filimi_nimi_txt != null)
+                {
+                    File.Copy(open.FileName, save.FileName);
+                    pictureBox.Image = Image.FromFile(save.FileName);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Puudub toode nimetus või ole Cancel vajutatud");
+            }
+        }
+
+    
         private void Kinosaalid()
         {
             conn.Open();
-            cmd = new SqlCommand("SELECT Kinosaal_nimetus FROM Kinosaal WHERE Kinosaal_nimetus IN ('Kinosaal 1', 'Kinosaal 2')", conn);
+            cmd = new SqlCommand("SELECT Id, Kinosaal_nimetus FROM Kinosaal", conn);
             adapter = new SqlDataAdapter(cmd);
             kinosaal_table = new DataTable();
             adapter.Fill(kinosaal_table);
-
-            comboBox1.Items.Clear();  // Clear any existing items in ComboBox
-
-            // Add cinema halls from the database (if they exist)
             foreach (DataRow item in kinosaal_table.Rows)
             {
                 comboBox1.Items.Add(item["Kinosaal_nimetus"]);
             }
-
-            // If for some reason they aren't in the database, add them manually
-            if (!comboBox1.Items.Contains("Kinosaal 1"))
-            {
-                comboBox1.Items.Add("Kinosaal 1");
-            }
-            if (!comboBox1.Items.Contains("Kinosaal 2"))
-            {
-                comboBox1.Items.Add("Kinosaal 2");
-            }
-
             conn.Close();
         }
         private void Insert_btn_Click(object sender, EventArgs e)
         {
-            if (filimi_nimi_txt.Text.Trim() != string.Empty && filmi_aasta_txt.Text.Trim() != string.Empty && comboBox1.SelectedItem != null)
+            if (filimi_nimi_txt.Text.Trim() != string.Empty && filmi_aasta_txt.Text.Trim() != string.Empty && comboBox1.SelectedIndex >= 0)
             {
                 try
                 {
                     conn.Open();
 
-                    // Get the selected cinema hall's ID
-                    cmd = new SqlCommand("SELECT Id FROM Kinosaal WHERE Kinosaal_nimetus=@kinosaal", conn);
-                    cmd.Parameters.AddWithValue("@kinosaal", comboBox1.SelectedItem.ToString());
+                    // Get the ID of the selected Kinosaal
+                    cmd = new SqlCommand("SELECT Id FROM Kinosaal WHERE Kinosaal_nimetus=@kinosaal_nimetus", conn);
+                    cmd.Parameters.AddWithValue("@kinosaal_nimetus", comboBox1.SelectedItem.ToString()); // Use SelectedItem, not SelectedValue
                     int kinosaalId = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    // Check if the Kinosaal Id was retrieved successfully
-                    if (kinosaalId > 0)
-                    {
-                        cmd = new SqlCommand("INSERT INTO Filmi (Filmi_nimetus, Aasta, Poster, Kinosaal_Id) VALUES (@filmiNimetus, @aasta, @poster, @kinosaalId)", conn);
-                        cmd.Parameters.AddWithValue("@filmiNimetus", filimi_nimi_txt.Text);
-                        cmd.Parameters.AddWithValue("@aasta", filmi_aasta_txt.Text);
-                        cmd.Parameters.AddWithValue("@poster", filimi_nimi_txt.Text + extension);  // If extension is set
-                        cmd.Parameters.AddWithValue("@kinosaalId", kinosaalId);
-                        cmd.ExecuteNonQuery();
+                    // Save the poster image to the specified location
+                    string posterFileName = filimi_nimi_txt.Text + extension;
+                    string posterPath = Path.Combine(@"C:\Users\opilane\Pictures\", posterFileName); // Or your desired directory
 
-                        MessageBox.Show("Film added successfully!");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid cinema hall selected!");
-                    }
+                    // Copy the poster to the folder
+                    File.Copy(open.FileName, posterPath, true); // true will overwrite the file if it already exists
+
+                    // Insert new film data into the database
+                    cmd = new SqlCommand("INSERT INTO Filmi (Filmi_nimetus, Aasta, Poster, Kinosaal_Id) VALUES (@filmi_nimetus, @aasta, @poster, @kinosaal_id)", conn);
+                    cmd.Parameters.AddWithValue("@filmi_nimetus", filimi_nimi_txt.Text);
+                    cmd.Parameters.AddWithValue("@aasta", filmi_aasta_txt.Text);
+                    cmd.Parameters.AddWithValue("@poster", posterFileName);  // Store the poster file name, not the path
+                    cmd.Parameters.AddWithValue("@kinosaal_id", kinosaalId);  // Use the Kinosaal ID
+
+                    cmd.ExecuteNonQuery();
 
                     conn.Close();
+
+                    // Refresh data grid
                     NaitaAndmed();
+
+                    MessageBox.Show("Film edukalt lisatud");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error while adding data: " + ex.Message);
+                    MessageBox.Show("Andmebaasiga viga: " + ex.Message);
                 }
-
             }
             else
             {
-                MessageBox.Show("Please fill in all fields and select a cinema hall.");
+                MessageBox.Show("Sisesta andmeid");
             }
         }
 
+
         private void Uuenda_btn_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (filimi_nimi_txt.Text.Trim() != string.Empty && filmi_aasta_txt.Text.Trim() != string.Empty)
+            {
+                try
+                {
+                    conn.Open();
+
+                    cmd = new SqlCommand("UPDATE Filmi SET Filmi_nimetus=@filmi_nimetus, Aasta=@aasta WHERE Id=@id", conn);
+                    cmd.Parameters.AddWithValue("@id", ID);
+                    cmd.Parameters.AddWithValue("@filmi_nimetus", filimi_nimi_txt.Text);
+                    cmd.Parameters.AddWithValue("@aasta", filmi_aasta_txt.Text);
+
+                    cmd.ExecuteNonQuery();
+
+                    conn.Close();
+
+                    NaitaAndmed();
+
+                    MessageBox.Show("Andmed edukalt uuendatud", "Uuendamine");
+
+                    filimi_nimi_txt.Text = "";
+                    filmi_aasta_txt.Text = "";
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Andmebaasiga viga");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Sisesta andmeid");
+            }
         }
+        
 
         private void Kustuta_btn_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                try
+                {
+                    int deletedId = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+
+                    conn.Open();
+
+                    cmd = new SqlCommand("DELETE FROM Filmi WHERE Id=@id", conn);
+                    cmd.Parameters.AddWithValue("@id", deletedId);
+                    cmd.ExecuteNonQuery();
+
+                    conn.Close();
+
+                    NaitaAndmed();
+
+                    MessageBox.Show("Kirje kustutatud");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Viga kustutamisel");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Valige kustutamiseks kirje");
+            }
         }
-
-
     }
 }

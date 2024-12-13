@@ -115,8 +115,8 @@ namespace Kino_AB_V.A.TARpv23
                 
                 if (txt_nimi.Text == "Admin" && txt_parool.Text == "Admin" && txt_email.Text == "Admin")
                 {
-                    Admin admin = new Admin();
-                    admin.Show();
+                    PeamineVorm peamineVorm = new PeamineVorm();
+                    peamineVorm.Show();
                 }
                 else
                 {
