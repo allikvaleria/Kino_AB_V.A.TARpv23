@@ -143,12 +143,64 @@ namespace Kino_AB_V.A.TARpv23
 
         private void Update_btn_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (dataGridView.SelectedRows.Count > 0 && kinosaal_txt.Text.Trim() != string.Empty && kinosaal_kirjeldau_txt.Text.Trim() != string.Empty && kinosaal_rida_txt.Text.Trim() != string.Empty && kinosaal_koht_txt.Text.Trim() != string.Empty)
+            {
+                try
+                {
+                    int kinosaalId = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+
+                    conn.Open();
+                    cmd = new SqlCommand("UPDATE Kinosaal SET Kinosaal_nimetus=@nimetus, Kinosaal_kirjeldus=@kirjeldus, Kinosaal_rida=@rida, Kinosaal_koht=@koht WHERE Id=@id", conn);
+                    cmd.Parameters.AddWithValue("@id", kinosaalId);
+                    cmd.Parameters.AddWithValue("@nimetus", kinosaal_txt.Text);
+                    cmd.Parameters.AddWithValue("@kirjeldus", kinosaal_kirjeldau_txt.Text);
+                    cmd.Parameters.AddWithValue("@rida", Convert.ToInt32(kinosaal_rida_txt.Text));
+                    cmd.Parameters.AddWithValue("@koht", Convert.ToInt32(kinosaal_koht_txt.Text));
+
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                    MessageBox.Show("Andmed edukalt uuendatud");
+                    NaitaAndmed();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Andmebaasiga viga: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Valige kirje ja täitke kõik väljad");
+            }
         }
 
         private void Delete_btn_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                try
+                {
+                    int kinosaalId = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+
+                    conn.Open();
+                    cmd = new SqlCommand("DELETE FROM Kinosaal WHERE Id=@id", conn);
+                    cmd.Parameters.AddWithValue("@id", kinosaalId);
+
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                    MessageBox.Show("Kirje edukalt kustutatud");
+                    NaitaAndmed();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Andmebaasiga viga: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Valige kirje kustutamiseks");
+            }
         }
 
         private void Insert_btn_Click(object sender, EventArgs e)

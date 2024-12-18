@@ -50,6 +50,7 @@ namespace Kino_AB_V.A.TARpv23
             button4.Location = new Point(90, 132);
             button4.Size = new Size(162, 50);
             button4.Text = "Kasutajad";
+            button4.Click += Button4_Click;
             
             // pictureBox1
             pictureBox1 = new PictureBox();
@@ -61,6 +62,12 @@ namespace Kino_AB_V.A.TARpv23
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            KasutajaDB kasutajaDB = new KasutajaDB();
+            kasutajaDB.Show();
         }
 
         private void Button3_Click(object sender, EventArgs e)
