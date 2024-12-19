@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace Kino_AB_V.A.TARpv23
 {
-    public partial class PiletidDB : Form
+    public partial class KinoPiletidDB : Form
     {
-        Label label1, label2, label3, label4, label5;
+        Label label, label2, label3, label4, label5;
         ComboBox comboBox1, comboBox2, comboBox3;
         TextBox textBox1, textBox2;
         DataGridView dataGridView1;
@@ -36,62 +36,62 @@ namespace Kino_AB_V.A.TARpv23
             conn.Close();
         }
 
-        public PiletidDB()
+        public KinoPiletidDB()
         {
             this.Height = 550;
             this.Width = 850;
             this.Text = "Piletid andmed";
 
             // label1
-            label1 = new Label();
-            label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
-            label1.Location = new Point(39, 23);
-            label1.Size = new Size(103, 20);
-            label1.Text = "Kasutaja_id";
-            
+            label = new Label();
+            label.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
+            label.Location = new Point(39, 23);
+            label.Size = new Size(103, 20);
+            label.Text = "Kasutaja_id";
+
             // label2
             label2 = new Label();
             label2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
             label2.Location = new Point(39, 194);
             label2.Size = new Size(133, 20);
             label2.Text = "Seansi lõpuaeg";
-            
+
             // label3
             label3 = new Label();
             label3.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
             label3.Location = new Point(39, 152);
             label3.Size = new Size(142, 20);
             label3.Text = "Seansi algusaeg";
-            
+
             // label4
             label4 = new Label();
             label4.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
             label4.Location = new Point(39, 66);
             label4.Size = new Size(70, 20);
             label4.Text = "Filmi_id";
-            
+
             // label5
             label5 = new Label();
             label5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
             label5.Location = new Point(39, 109);
             label5.Size = new Size(101, 20);
             label5.Text = "Kinosaal_id";
-            
+
             // comboBox1
             comboBox1 = new ComboBox();
             comboBox1.Location = new Point(222, 65);
             comboBox1.Size = new Size(121, 21);
-            
+
             // comboBox2
             comboBox2 = new ComboBox();
             comboBox2.Location = new Point(222, 25);
             comboBox2.Size = new Size(121, 21);
-            
+
             // comboBox3
             comboBox3 = new ComboBox();
             comboBox3.Location = new Point(221, 108);
             comboBox3.Size = new Size(121, 21);
-            
+
             // textBox1
             textBox1 = new TextBox();
             textBox1.Location = new Point(221, 154);
@@ -145,7 +145,7 @@ namespace Kino_AB_V.A.TARpv23
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(label);
         }
 
         private void Button3_Click(object sender, EventArgs e) //update

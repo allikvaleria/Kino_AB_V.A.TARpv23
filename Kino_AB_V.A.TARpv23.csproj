@@ -79,6 +79,12 @@
     <Compile Include="KasutajaDB.Designer.cs">
       <DependentUpon>KasutajaDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="KinoPiletidDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KinoPiletidDB.Designer.cs">
+      <DependentUpon>KinoPiletidDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Kinosaal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,12 +96,6 @@
     </Compile>
     <Compile Include="PeamineVorm.Designer.cs">
       <DependentUpon>PeamineVorm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PiletidDB.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PiletidDB.Designer.cs">
-      <DependentUpon>PiletidDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -116,9 +116,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PeamineVorm.resx">
       <DependentUpon>PeamineVorm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PiletidDB.resx">
-      <DependentUpon>PiletidDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
