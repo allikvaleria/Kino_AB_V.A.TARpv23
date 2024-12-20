@@ -35,6 +35,7 @@ namespace Kino_AB_V.A.TARpv23
             button2.Location = new Point(90, 343);
             button2.Size = new Size(162, 50);
             button2.Text = "Piletid";
+            button2.Click += Button2_Click;
 
             //Kinosaalid
             button3 = new Button();
@@ -62,6 +63,12 @@ namespace Kino_AB_V.A.TARpv23
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            KinoPiletidDB kinoPiletidDB = new KinoPiletidDB();
+            kinoPiletidDB.Show();
         }
 
         private void Button4_Click(object sender, EventArgs e)

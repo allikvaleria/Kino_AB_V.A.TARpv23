@@ -46,6 +46,7 @@ namespace Kino_AB_V.A.TARpv23
             btn_ostaPilet.Location = new Point(105, 163);
             btn_ostaPilet.Size = new Size(161, 42);
             btn_ostaPilet.Text = "Osta pilet";
+            btn_ostaPilet.Click += Btn_ostaPilet_Click;
             
             // pictureBox
             pictureBox = new PictureBox();
@@ -58,6 +59,19 @@ namespace Kino_AB_V.A.TARpv23
             Controls.Add(btn_valiFilm);
             Controls.Add(lbl_vali);
         }
+
+        private void Btn_ostaPilet_Click(object sender, EventArgs e)
+        {
+            // Пример данных, которые могут быть использованы
+            string filmiNimetus = "Film Name"; // Замените на реальное название фильма
+            string posterFile = @"..\..\film1.png"; // Замените на реальный путь к постеру
+            string seanss_start = DateTime.Now.ToString("HH:mm"); // Время сеанса
+
+            // Передаем параметры в конструктор OstaPilet
+            OstaPilet ostaPilet = new OstaPilet(filmiNimetus, posterFile, seanss_start);
+            ostaPilet.Show();
+        }
+
 
         private void Btn_valiFilm_Click(object sender, EventArgs e)
         {

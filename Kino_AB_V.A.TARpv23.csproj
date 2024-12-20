@@ -79,23 +79,35 @@
     <Compile Include="KasutajaDB.Designer.cs">
       <DependentUpon>KasutajaDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="KinoPiletidDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KinoPiletidDB.Designer.cs">
+      <DependentUpon>KinoPiletidDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Kinosaal.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Kinosaal.Designer.cs">
       <DependentUpon>Kinosaal.cs</DependentUpon>
     </Compile>
+    <Compile Include="OstaPilet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OstaPilet.Designer.cs">
+      <DependentUpon>OstaPilet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PDFForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PDFForm.Designer.cs">
+      <DependentUpon>PDFForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PeamineVorm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PeamineVorm.Designer.cs">
       <DependentUpon>PeamineVorm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PiletidDB.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PiletidDB.Designer.cs">
-      <DependentUpon>PiletidDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,14 +123,14 @@
     <EmbeddedResource Include="Kasutaja.resx">
       <DependentUpon>Kasutaja.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="KinoPiletidDB.resx">
+      <DependentUpon>KinoPiletidDB.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Kinosaal.resx">
       <DependentUpon>Kinosaal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PeamineVorm.resx">
       <DependentUpon>PeamineVorm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PiletidDB.resx">
-      <DependentUpon>PiletidDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
