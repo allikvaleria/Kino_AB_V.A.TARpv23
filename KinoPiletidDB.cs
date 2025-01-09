@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,15 +13,14 @@ namespace Kino_AB_V.A.TARpv23
 {
     public partial class KinoPiletidDB : Form
     {
-
         Label label, label2, label3, label4, label5;
-        ComboBox comboBox1, comboBox2, comboBox3;
+        ComboBox comboBox1, comboBox3;
         DateTimePicker textBox1, textBox2;
         DataGridView dataGridView1;
         Button button1, button2, button3;
         SqlConnection conn = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\opilane\source\repos\ValeriaAllikTARpv23\Kino_AB_V.A.TARpv23\Database_RG.mdf;Integrated Security=True");
         SqlCommand cmd;
-        DataTable kinosaal_table, kasutaja_table, filmi_table;
+        DataTable kinosaal_table, filmi_table;
         SqlDataAdapter adapter;
         OpenFileDialog open;
         SaveFileDialog save;
@@ -49,7 +48,7 @@ namespace Kino_AB_V.A.TARpv23
             label.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold);
             label.Location = new Point(39, 23);
             label.Size = new Size(103, 20);
-            label.Text = "Kasutaja_id";
+            label.Text = "Kasutaja_id"; // Мы оставляем этот label, но не будем использовать его
 
             // label2
             label2 = new Label();
@@ -84,13 +83,6 @@ namespace Kino_AB_V.A.TARpv23
             comboBox1.Location = new Point(222, 65);
             comboBox1.Size = new Size(121, 21);
 
-            
-
-            // comboBox2
-            comboBox2 = new ComboBox();
-            comboBox2.Location = new Point(222, 25);
-            comboBox2.Size = new Size(121, 21);
-
             // comboBox3
             comboBox3 = new ComboBox();
             comboBox3.Location = new Point(221, 108);
@@ -100,17 +92,17 @@ namespace Kino_AB_V.A.TARpv23
             textBox1 = new DateTimePicker();
             textBox1.Location = new Point(221, 154);
             textBox1.Size = new Size(122, 20);
-            // 
+
             // DateTimePicker2
             textBox2 = new DateTimePicker();
             textBox2.Location = new Point(221, 196);
             textBox2.Size = new Size(122, 20);
-            // 
+
             // dataGridView1
             dataGridView1 = new DataGridView();
             dataGridView1.Location = new Point(43, 248);
             dataGridView1.Size = new Size(760, 239);
-            // 
+
             // button1
             button1 = new Button();
             button1.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold);
@@ -118,7 +110,7 @@ namespace Kino_AB_V.A.TARpv23
             button1.Size = new Size(144, 53);
             button1.Text = "Lisa andmed";
             button1.Click += Button1_Click;
-            // 
+
             // button2
             button2 = new Button();
             button2.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold);
@@ -126,7 +118,7 @@ namespace Kino_AB_V.A.TARpv23
             button2.Size = new Size(144, 53);
             button2.Text = "Kustuta andmed";
             button2.Click += Button2_Click;
-            // 
+
             // button3
             button3 = new Button();
             button3.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold);
@@ -136,9 +128,8 @@ namespace Kino_AB_V.A.TARpv23
             button3.Click += Button3_Click;
 
             Kinosaalid();
-            Kasutaja();
             Filmi();
-            // 
+
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -146,7 +137,6 @@ namespace Kino_AB_V.A.TARpv23
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             Controls.Add(comboBox3);
-            Controls.Add(comboBox2);
             Controls.Add(comboBox1);
             Controls.Add(label5);
             Controls.Add(label4);
@@ -170,21 +160,21 @@ namespace Kino_AB_V.A.TARpv23
             conn.Close();
         }
 
-        private void Kasutaja()
+        private void Filmi()
         {
             conn.Open();
-            cmd = new SqlCommand("SELECT Id, Nimi FROM Kasutaja", conn);
+            cmd = new SqlCommand("SELECT Id, Filmi_nimetus FROM Filmi", conn);
             adapter = new SqlDataAdapter(cmd);
-            kasutaja_table = new DataTable();
-            adapter.Fill(kasutaja_table);
-            foreach (DataRow item in kasutaja_table.Rows)
+            filmi_table = new DataTable();
+            adapter.Fill(filmi_table);
+            foreach (DataRow item in filmi_table.Rows)
             {
-                comboBox2.Items.Add(item["Nimi"]);
+                comboBox1.Items.Add(item["Filmi_nimetus"]);
             }
             conn.Close();
         }
 
-        private void Filmi()
+        private void Piletid()
         {
             conn.Open();
             cmd = new SqlCommand("SELECT Id, Filmi_nimetus FROM Filmi", conn);
@@ -200,7 +190,7 @@ namespace Kino_AB_V.A.TARpv23
 
         private void Button3_Click(object sender, EventArgs e) //update
         {
-            if (dataGridView1.SelectedRows.Count > 0 && comboBox1.SelectedItem != null && comboBox2.SelectedItem != null && comboBox3.SelectedItem != null && textBox1.Text.Trim() != string.Empty && textBox2.Text.Trim() != string.Empty)
+            if (dataGridView1.SelectedRows.Count > 0 && comboBox1.SelectedItem != null && comboBox3.SelectedItem != null && textBox1.Text.Trim() != string.Empty && textBox2.Text.Trim() != string.Empty)
             {
                 try
                 {
@@ -208,10 +198,9 @@ namespace Kino_AB_V.A.TARpv23
 
                     conn.Open();
                     // SQL command to update Piletid table
-                    cmd = new SqlCommand("UPDATE Piletid SET Kasutaja_id=@Kasutaja_id, Filmi_id=@Filmi_id, Kinosaal_id=@Kinosaal_id WHERE Id=@id", conn);
+                    cmd = new SqlCommand("UPDATE Piletid SET Filmi_id=@Filmi_id, Kinosaal_id=@Kinosaal_id WHERE Id=@id", conn);
                     cmd.Parameters.AddWithValue("@id", piletId);
-                    cmd.Parameters.AddWithValue("@Kasutaja_id", comboBox1.SelectedValue);
-                    cmd.Parameters.AddWithValue("@Filmi_id", comboBox2.SelectedValue);
+                    cmd.Parameters.AddWithValue("@Filmi_id", comboBox1.SelectedValue);
                     cmd.Parameters.AddWithValue("@Kinosaal_id", comboBox3.SelectedValue);
 
                     cmd.ExecuteNonQuery();
@@ -264,7 +253,7 @@ namespace Kino_AB_V.A.TARpv23
         private void Button1_Click(object sender, EventArgs e) // insert
         {
             // Check if all required fields are filled
-            if (comboBox1.SelectedIndex >= 0 && comboBox2.SelectedIndex >= 0 && comboBox3.SelectedIndex >= 0 &&
+            if (comboBox1.SelectedIndex >= 0 && comboBox3.SelectedIndex >= 0 &&
                 !string.IsNullOrWhiteSpace(textBox1.Text) && !string.IsNullOrWhiteSpace(textBox2.Text))
             {
                 try
@@ -273,7 +262,6 @@ namespace Kino_AB_V.A.TARpv23
                     conn.Open();
 
                     // Get selected values from the ComboBoxes
-                    int kasutajaId = Convert.ToInt32(comboBox2.SelectedValue);  // Kasutaja_id
                     int filmiId = Convert.ToInt32(comboBox1.SelectedValue);    // Filmi_id
                     int kinosaalId = Convert.ToInt32(comboBox3.SelectedValue); // Kinosaal_id
 
@@ -282,9 +270,8 @@ namespace Kino_AB_V.A.TARpv23
                     DateTime seansiLopp = textBox2.Value;  // Seansi lõpuaeg
 
                     // Insert data into the Piletid table
-                    cmd = new SqlCommand("INSERT INTO Piletid (Kasutaja_id, Filmi_id, Kinosaal_id, Seansi_algusaeg, Seansi_lopuaeg) " +
-                                         "VALUES (@Kasutaja_id, @Filmi_id, @Kinosaal_id, @Seansi_algusaeg, @Seansi_lopuaeg)", conn);
-                    cmd.Parameters.AddWithValue("@Kasutaja_id", kasutajaId);
+                    cmd = new SqlCommand("INSERT INTO Piletid (Filmi_id, Kinosaal_id, Seansi_algusaeg, Seansi_lopuaeg) " +
+                                         "VALUES (@Filmi_id, @Kinosaal_id, @Seansi_algusaeg, @Seansi_lopuaeg)", conn);
                     cmd.Parameters.AddWithValue("@Filmi_id", filmiId);
                     cmd.Parameters.AddWithValue("@Kinosaal_id", kinosaalId);
                     cmd.Parameters.AddWithValue("@Seansi_algusaeg", seansiAlgus);
@@ -313,4 +300,3 @@ namespace Kino_AB_V.A.TARpv23
         }
     }
 }
-    
